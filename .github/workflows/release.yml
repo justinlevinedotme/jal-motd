@@ -1,0 +1,23 @@
+name: Create ZIP on Release
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  create-zip:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Create ZIP archive
+        run: |
+          zip -r repository-${{ github.event.release.tag_name }}.zip .
+
+      - name: Upload ZIP archive as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: repository-zip-${{ github.event.release.tag_name }}
+          path: repository-${{ github.event.release.tag_name }}.zip
