@@ -1,0 +1,86 @@
+#!/bin/bash
+# Adapted from raspberrypi-motd by ar5ian (https://github.com/ar51an/raspberrypi-motd) 
+# by justinlevinedotme (https://github.com/justinlevinedotme)
+
+function color (){
+  local fg=$1
+  local bg=$2
+  local bold=$3
+  local text=$4
+
+  local fgCode=$(tput setaf $fg)
+  local bgCode=$(tput setab $bg)
+  local resetCode=$(tput sgr0)
+  local boldCode=""
+
+  if [ "$bold" == "true" ]; then
+    boldCode=$(tput bold)
+  fi
+
+  echo "${boldCode}${fgCode}${bgCode}${text}${resetCode}"
+}
+
+function setCountColor (){
+  local input=$1
+
+  if [ "$input" -eq 0 ]; then
+    countColorFg=$countZeroColorFg
+    countColorBg=$countZeroColorBg
+    countBold=$countZeroBold
+  else
+    countColorFg=$countNonZeroColorFg
+    countColorBg=$countNonZeroColorBg
+    countBold=$countNonZeroBold
+  fi
+}
+
+function msgFormat (){
+  local input=$1
+  local packagesPlural="s"
+
+  if [[ $input -eq 0 ||  $input -eq 1 ]]; then
+    packagesPlural=""
+  fi
+  echo "package$packagesPlural"
+}
+
+#Color Configs
+#msgColor = everything besides the update count.
+msgColorFg=7 #White Text
+msgColorBg=0 #No BG         
+msgBold=false
+
+#countZeroColor = the color of the number of packages if zero updates needed.
+countZeroColorFg=16   # Black text
+countZeroColorBg=242  # Gray background
+countZeroBold=false
+
+#countNonZeroColor = the color of the number of packages if updates are needed.
+countNonZeroColorFg=16 # Black text
+countNonZeroColorBg=71 # Green background
+countNonZeroBold=false
+
+# Count
+apt-get update --quiet=2
+pkgCount="$(apt-get -s dist-upgrade | grep -Po '^\d+(?= upgraded)')"
+setCountColor "$pkgCount"
+
+# Message
+msgHeader=$(color $msgColorFg $msgColorBg $msgBold \*)
+msgCount=$(color $countColorFg $countColorBg $countBold " $pkgCount ")
+msgLabel=$(color $msgColorFg $msgColorBg $msgBold "$(msgFormat $pkgCount) can be upgraded")
+
+updateMsg=" $msgHeader $msgCount $msgLabel"
+
+# Output To Static Script
+OUT="/etc/update-motd.d/"$(basename $0)
+exec >${OUT}
+echo "#!/bin/bash"
+echo
+echo "#####################################################"
+echo "#              DO NOT EDIT THIS SCRIPT              #"
+echo "#     EDIT: /etc/update-motd-static.d/20-update     #"
+echo "#####################################################"
+echo "cat <<EOF"
+echo -e "\n$updateMsg\n"
+echo "EOF"

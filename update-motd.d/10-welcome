@@ -1,0 +1,73 @@
+#!/bin/bash
+# Adapted from raspberrypi-motd by ar5ian (https://github.com/ar51an/raspberrypi-motd) 
+# by justinlevinedotme (https://github.com/justinlevinedotme)
+
+function color (){
+  local fg=$1
+  local bg=$2
+  local bold=$3
+  local text=$4
+
+  local fgCode=$(tput setaf $fg)
+  local bgCode=$(tput setab $bg)
+  local resetCode=$(tput sgr0)
+  local boldCode=""
+
+  if [ "$bold" == "true" ]; then
+    boldCode=$(tput bold)
+  fi
+
+  echo "${boldCode}${fgCode}${bgCode}${text}${resetCode}"
+}
+
+function findDeviceModel (){
+  deviceName=""
+  local deviceModel=$(tr -d '\0' < /sys/firmware/devicetree/base/model)
+  local hostName=$(hostname)
+
+  if [ "$hostName" ]; then
+    deviceName="$deviceModel - $hostName"
+  else
+    deviceName="$deviceModel"
+  fi
+}
+
+#Color Configs
+#deviceColor = The header, what it calls your device.
+deviceColorFg=0    # Black text
+deviceColorBg=7    # White background
+deviceBold=false    # Bold text
+
+#greetingsColor = the date shown, etc.
+greetingsColorFg=7 # White text
+greetingsColorBg=0 # Default background
+greetingsBold=false
+
+#userColor = what it calls you!
+userColorFg=0      # Black text
+userColorBg=87     # #60FDFF background
+userBold=true
+
+#codenameColor = "bookworm"
+codenameColorFg=8  # Dark gray text
+codenameColorBg=0  # Default background
+codenameBold=false
+
+me=$(logname)
+findDeviceModel
+
+# Device Info
+deviceLabel=$(color $deviceColorFg $deviceColorBg $deviceBold " $deviceName ")
+
+# Greetings
+me=$(color $userColorFg $userColorBg $userBold " $me ")
+codename=$(grep 'VERSION_CODENAME' /etc/os-release | cut -d '=' -f 2)
+greetings="$(color $greetingsColorFg $greetingsColorBg $greetingsBold " * Welcome") $me $(color $greetingsColorFg $greetingsColorBg $greetingsBold "To") $(color $codenameColorFg $codenameColorBg $codenameBold "$codename")\n"
+greetings="$greetings$(color $greetingsColorFg $greetingsColorBg $greetingsBold " * $(date +"%a %b %d %Y, %I:%M:%S %p")")\n"
+
+# OS
+greetings="$greetings$(color $greetingsColorFg $greetingsColorBg $greetingsBold " * $(uname -srm)")"
+
+# Print
+echo -e "\n$deviceLabel"
+echo -e "\n$greetings"
