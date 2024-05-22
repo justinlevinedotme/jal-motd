@@ -1,0 +1,60 @@
+#!/bin/bash
+# This script lists all docker containers and their status
+# Taken from https://github.com/yboetz/motd/blob/master/60-docker
+
+# Function to add color and boldness
+function color (){
+  local fg=$1
+  local bg=$2
+  local bold=$3
+  local text=$4
+
+  local fgCode="\e[38;5;${fg}m"
+  local bgCode="\e[48;5;${bg}m"
+  local resetCode="\e[0m"
+  local boldCode=""
+
+  if [ "$bold" == "true" ]; then
+    boldCode="\e[1m"
+  fi
+
+  echo -e "${boldCode}${fgCode}${bgCode}${text}${resetCode}"
+}
+
+# Color Configs
+dockerStatusHeaderFg=7  # White text
+dockerStatusHeaderBg=0  # No background
+dockerStatusHeaderBold=true
+
+dockerRunningColorFg=46  # Green
+dockerRunningColorBg=0   # No background
+dockerRunningBold=true
+
+dockerStoppedColorFg=196 # Red
+dockerStoppedColorBg=0   # No background
+dockerStoppedBold=true
+
+# set column width
+COLUMNS=2
+
+# Get container information
+mapfile -t containers < <(docker ps -a --format '{{.Names}}\t{{.Status}}' | awk '{ print $1,$2 }')
+
+out=""
+for i in "${!containers[@]}"; do
+    IFS=" " read -r name status <<< "${containers[i]}"
+    # color green if service is active, else red
+    if [[ "${status}" == "Up" ]]; then
+        out+="${name}:,$(color $dockerRunningColorFg $dockerRunningColorBg $dockerRunningBold "${status,,}"),"
+    else
+        out+="${name}:,$(color $dockerStoppedColorFg $dockerStoppedColorBg $dockerStoppedBold "${status,,}"),"
+    fi
+    # insert \n every $COLUMNS column
+    if [ $(((i+1) % COLUMNS)) -eq 0 ]; then
+        out+="\n"
+    fi
+done
+out+="\n\n"
+
+printf "\n$(color $dockerStatusHeaderFg $dockerStatusHeaderBg $dockerStatusHeaderBold "* docker status:")\n"
+printf "$out" | column -ts $',' | sed -e 's/^/  /'

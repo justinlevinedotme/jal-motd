@@ -2,13 +2,17 @@
 <a name="readme-top"></a>
 <br />
 <div align="center">
-
+  <img src="images/logo.png" alt="Logo" width="200" height="200">
   <h3 align="center">jal-motd</h3>
 
   <p align="center">
     A Dynamic and highly  customizable MOTD, heavily based off of <a href = "https://github.com/ar51an/raspberrypi-motd">raspberrypi-motd by ar51an.</a>
     <br />
+    _______
     <br />
+    <a href="https://github.com/justinlevinedotme/jal-motd/issues/new?labels=bug&template=bug_report.md">Report Bug</a>
+    -
+    <a href="https://github.com/justinlevinedotme/jal-motd/issues/new?labels=enhancement&template=feature_request.md">Request Feature</a>
   </p>
 </div>
 
@@ -40,16 +44,20 @@ sudo chmod +x uninstall-motd.sh
 sudo ./uninstall-motd.sh
 ```
 
+If there are any parts you don't want of the script, for example, `16-docker` feel free to remove it from the `update-motd.d` directory after running `install.sh`
+
 ## Customization
 
 (**Goal 2: Customizable)** Customization of your MOTD is also pretty straightforward. There are 3 files in which customizations are applied. *Warning! Do not change anything in `/etc/update-motd.d/20-update` as this will surely break the timer installed.*
 
 - `/etc/update-motd.d/10-welcome`
-![10-welcome](https://i.ibb.co/qs3Fcv5/10-welcome-scr.png)
+![10-welcome](images/10-welcome-scr.png)
 - `/etc/update-motd.d/15-filesystem`
-![15-filesystem](https://i.ibb.co/wKJTfc4/20-update-scr.png)
+![15-system](images/15-system-scr.png)
+- `/etc/update-motd.d/16-docker`
+![16-docker](images/16-docker-scr.png)
 - `/etc/update-motd-static.d/20-update`
-![20-update](https://i.ibb.co/6nDFMgp/20-update-scr.png)
+![20-update](images/20-update-scr.png)
 
 The currently supported customization is primarily coloring and text styling, although I would like to add more in the future. See below for a list of things to customize.
 
@@ -78,7 +86,7 @@ codenameColorBg=0  # Default background
 codenameBold=false
 ```
 
-#### 15-filesystem
+#### 15-system
 
 ```sh
 #Color Configs (defaults shown)
@@ -103,6 +111,24 @@ dimInfoColorBg=0  # Default background
 dimInfoBold=false
 ```
 
+#### 16-docker
+```sh
+# Color Configs
+dockerStatusHeaderFg=7  # White text
+dockerStatusHeaderBg=0  # No background
+dockerStatusHeaderBold=true
+
+dockerRunningColorFg=46  # Green
+dockerRunningColorBg=0   # No background
+dockerRunningBold=true
+
+dockerStoppedColorFg=196 # Red
+dockerStoppedColorBg=0   # No background
+dockerStoppedBold=true
+
+# set column width
+COLUMNS=2
+```
 #### 20-update
 
 ```sh
@@ -132,7 +158,8 @@ The `/etc/update-motd.d` folder loads the files in order according to the two nu
 ```
 1. 10-welcome
 2. 15-filesystem
-3. 20-update (intentionally blank)
+3. 16-docker
+4. 20-update (intentionally blank)
 ```
 
 Keeping that in mind, if you were to add a file with 11 before the same, for example: `11-foo`, the file would then load after `10-welcome` but before `15-filesystem`. Feel free to make some cool stuff and add to our repo by contributing. More on that next.
@@ -141,22 +168,11 @@ Keeping that in mind, if you were to add a file with 11 before the same, for exa
 
 Contributions are always welcome!
 
-For example, I don't know how on earth to write a contributing.md, or what is even a good way to go about it. I'd really love the ability to add some of your code here too.
+For example, I don't know how on earth to write a `contributing.md`, or what is even a good way to go about it. I'd really love the ability to add some of your code here too.
 
 ## Acknowledgements
 
 - [Readme Generator](readme.so)
 - [raspberripi-motd](https://github.com/ar51an/raspberrypi-motd)
 - [Best-README-template](https://github.com/othneildrew/Best-README-Template)
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/justinlevinedotme/jal-motd.svg?style=for-the-badge
-[contributors-url]: https://github.com/justinlevinedotme/jal-motd/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/justinlevinedotme/jal-motd.svg?style=for-the-badge
-[forks-url]: https://github.com/justinlevinedotme/jal-motd/network/members
-[stars-shield]: https://img.shields.io/github/stars/justinlevinedotme/jal-motd.svg?style=for-the-badge
-[stars-url]: https://github.com/justinlevinedotme/jal-motd/stargazers
-[license-shield]: https://img.shields.io/github/license/justinlevinedotme/jal-motd.svg?style=for-the-badge
-[license-url]: https://github.com/justinlevinedotme/jal-motd/blob/master/LICENSE.txt
-
+- [motd by yboetz](https://github.com/yboetz/motd) which `16-docker` mostly is taken from.

@@ -26,6 +26,7 @@ sudo systemctl restart sshd
 # Copy files to /etc/update-motd.d using the provided URLs
 wget -O /etc/update-motd.d/10-welcome "https://raw.githubusercontent.com/justinlevinedotme/jal-motd/main/update-motd.d/10-welcome"
 wget -O /etc/update-motd.d/15-filesystem "https://raw.githubusercontent.com/justinlevinedotme/jal-motd/main/update-motd.d/15-system"
+wget -O /etc/update-motd.d/15-filesystem "https://raw.githubusercontent.com/justinlevinedotme/jal-motd/main/update-motd.d/16-docker"
 wget -O /etc/update-motd.d/20-update "https://raw.githubusercontent.com/justinlevinedotme/jal-motd/main/update-motd.d/20-update"
 
 # Change owner of these files
