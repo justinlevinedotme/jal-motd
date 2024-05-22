@@ -8,16 +8,16 @@ function color (){
   local bold=$3
   local text=$4
 
-  local fgCode=$(tput setaf $fg)
-  local bgCode=$(tput setab $bg)
-  local resetCode=$(tput sgr0)
+  local fgCode="\e[38;5;${fg}m"
+  local bgCode="\e[48;5;${bg}m"
+  local resetCode="\e[0m"
   local boldCode=""
 
   if [ "$bold" == "true" ]; then
-    boldCode=$(tput bold)
+    boldCode="\e[1m"
   fi
 
-  echo "${boldCode}${fgCode}${bgCode}${text}${resetCode}"
+  echo -e "${boldCode}${fgCode}${bgCode}${text}${resetCode}"
 }
 
 function sec2time (){
@@ -45,28 +45,23 @@ function sec2time (){
   echo "$days day$daysPlural $hours hr$hoursPlural $mins min$minsPlural"
 }
 
-#Color Configs
-#statsLabelColor = the actual stats of your machine.
+# Color Configs
 statsLabelColorFg=7  # White
 statsLabelColorBg=0  # Default background
 statsLabelBold=false
 
-#bulletColor = the final "." before showing the stats
 bulletColorFg=8  # Dark gray
 bulletColorBg=0  # Default background
 bulletBold=false
 
-#infoColor = labels like "LAST, or IP"
 infoColorFg=87  # #60FDFF
 infoColorBg=0  # Default background
 infoBold=true
 
-#dimInfoColor = sub labels like * 05-20-24 11:50
 dimInfoColorFg=8  # Dim version of #60FDFF
 dimInfoColorBg=0  # Default background
 dimInfoBold=false
 
-resetColor=$(tput sgr0)
 me=$(logname)
 
 # Last Login
