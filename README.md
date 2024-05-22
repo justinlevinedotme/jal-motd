@@ -2,13 +2,15 @@
 <a name="readme-top"></a>
 <br />
 <div align="center">
-
+  <img src="images/logo.png" alt="Logo" width="80" height="80">
   <h3 align="center">jal-motd</h3>
 
   <p align="center">
     A Dynamic and highly  customizable MOTD, heavily based off of <a href = "https://github.com/ar51an/raspberrypi-motd">raspberrypi-motd by ar51an.</a>
     <br />
-    <br />
+    <a href="https://github.com/justinlevinedotme/jal-motd/issues/new?labels=bug&template=bug_report.md">Report Bug</a>
+    -
+    <a href="https://github.com/justinlevinedotme/jal-motd/issues/new?labels=enhancement&template=feature_request.md">Request Feature</a>
   </p>
 </div>
 
@@ -141,22 +143,10 @@ Keeping that in mind, if you were to add a file with 11 before the same, for exa
 
 Contributions are always welcome!
 
-For example, I don't know how on earth to write a contributing.md, or what is even a good way to go about it. I'd really love the ability to add some of your code here too.
+For example, I don't know how on earth to write a `contributing.md`, or what is even a good way to go about it. I'd really love the ability to add some of your code here too.
 
 ## Acknowledgements
 
 - [Readme Generator](readme.so)
 - [raspberripi-motd](https://github.com/ar51an/raspberrypi-motd)
 - [Best-README-template](https://github.com/othneildrew/Best-README-Template)
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/justinlevinedotme/jal-motd.svg?style=for-the-badge
-[contributors-url]: https://github.com/justinlevinedotme/jal-motd/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/justinlevinedotme/jal-motd.svg?style=for-the-badge
-[forks-url]: https://github.com/justinlevinedotme/jal-motd/network/members
-[stars-shield]: https://img.shields.io/github/stars/justinlevinedotme/jal-motd.svg?style=for-the-badge
-[stars-url]: https://github.com/justinlevinedotme/jal-motd/stargazers
-[license-shield]: https://img.shields.io/github/license/justinlevinedotme/jal-motd.svg?style=for-the-badge
-[license-url]: https://github.com/justinlevinedotme/jal-motd/blob/master/LICENSE.txt
-
