@@ -8,16 +8,16 @@ function color (){
   local bold=$3
   local text=$4
 
-  local fgCode=$(tput setaf $fg)
-  local bgCode=$(tput setab $bg)
-  local resetCode=$(tput sgr0)
+  local fgCode="\e[38;5;${fg}m"
+  local bgCode="\e[48;5;${bg}m"
+  local resetCode="\e[0m"
   local boldCode=""
 
   if [ "$bold" == "true" ]; then
-    boldCode=$(tput bold)
+    boldCode="\e[1m"
   fi
 
-  echo "${boldCode}${fgCode}${bgCode}${text}${resetCode}"
+  echo -e "${boldCode}${fgCode}${bgCode}${text}${resetCode}"
 }
 
 function setCountColor (){
@@ -44,18 +44,15 @@ function msgFormat (){
   echo "package$packagesPlural"
 }
 
-#Color Configs
-#msgColor = everything besides the update count.
-msgColorFg=7 #White Text
-msgColorBg=0 #No BG         
+# Color Configs
+msgColorFg=7         # White text
+msgColorBg=0         # No background         
 msgBold=false
 
-#countZeroColor = the color of the number of packages if zero updates needed.
 countZeroColorFg=16   # Black text
 countZeroColorBg=242  # Gray background
 countZeroBold=false
 
-#countNonZeroColor = the color of the number of packages if updates are needed.
 countNonZeroColorFg=16 # Black text
 countNonZeroColorBg=71 # Green background
 countNonZeroBold=false

@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Adapted from raspberrypi-motd by ar5ian (https://github.com/ar51an/raspberrypi-motd) 
 # by justinlevinedotme (https://github.com/justinlevinedotme)
 
@@ -8,16 +9,16 @@ function color (){
   local bold=$3
   local text=$4
 
-  local fgCode=$(tput setaf $fg)
-  local bgCode=$(tput setab $bg)
-  local resetCode=$(tput sgr0)
+  local fgCode="\e[38;5;${fg}m"
+  local bgCode="\e[48;5;${bg}m"
+  local resetCode="\e[0m"
   local boldCode=""
 
   if [ "$bold" == "true" ]; then
-    boldCode=$(tput bold)
+    boldCode="\e[1m"
   fi
 
-  echo "${boldCode}${fgCode}${bgCode}${text}${resetCode}"
+  echo -e "${boldCode}${fgCode}${bgCode}${text}${resetCode}"
 }
 
 function findDeviceModel (){
@@ -32,23 +33,19 @@ function findDeviceModel (){
   fi
 }
 
-#Color Configs
-#deviceColor = The header, what it calls your device.
+# Color Configs
 deviceColorFg=0    # Black text
 deviceColorBg=7    # White background
-deviceBold=false    # Bold text
+deviceBold=true    # Bold text
 
-#greetingsColor = the date shown, etc.
 greetingsColorFg=7 # White text
 greetingsColorBg=0 # Default background
 greetingsBold=false
 
-#userColor = what it calls you!
 userColorFg=0      # Black text
 userColorBg=87     # #60FDFF background
 userBold=true
 
-#codenameColor = "bookworm"
 codenameColorFg=8  # Dark gray text
 codenameColorBg=0  # Default background
 codenameBold=false
